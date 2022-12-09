@@ -6,7 +6,7 @@ var previous_mouse_tile: Vector2 = Vector2(-1,-1)
 var pieces: Dictionary = {}
 
 func _ready():
-	pass
+	new_game()
 
 func _process(_delta):
 	
@@ -27,3 +27,21 @@ func _draw():
 
 func x_y_to_key(x:int, y:int):
 	return (x << 3) + y
+
+func new_game() -> void:
+	pieces = {}
+	for i in range(0,2):
+		for x in range(0,8):
+			var y: int = 6-5*i
+			var p: Piece = Piece.new(i,0)
+			p.position = Vector2(x*60, y*60)
+			pieces[x_y_to_key(x,y)] = p
+		var types: Array[int] = [1,2,3,5-i,4+i,3,2,1]
+		for x in range(0,8):
+			var y: int = 7-7*i
+			var p: Piece =  Piece.new(i,types[x])
+			p.position = Vector2(x*60, y*60)
+			pieces[x_y_to_key(x,y)] = p
+	
+	for key in pieces:
+		add_child(pieces[key])

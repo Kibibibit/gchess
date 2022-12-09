@@ -8,6 +8,16 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "Node2D",
+"class": &"Piece",
+"language": &"GDScript",
+"path": "res://Scripts/Piece.gd"
+}]
+_global_script_class_icons={
+"Piece": ""
+}
+
 [application]
 
 config/name="gchess"

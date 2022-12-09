@@ -9,7 +9,7 @@
 script = ExtResource("1_jb8bq")
 
 [node name="BoardSprite" type="Sprite2D" parent="Board"]
-z_index = -1
+z_index = -3
 texture = ExtResource("1_iitqu")
 centered = false
 
