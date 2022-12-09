@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://eo0u6ql37rvi"]
+
+[ext_resource type="Texture2D" uid="uid://b0qnhams6s2by" path="res://Sprites/board.png" id="1_iitqu"]
+[ext_resource type="Script" path="res://Scripts/Board.gd" id="1_jb8bq"]
+
+[node name="Root" type="Node2D"]
+
+[node name="Board" type="Node2D" parent="."]
+script = ExtResource("1_jb8bq")
+
+[node name="BoardSprite" type="Sprite2D" parent="Board"]
+z_index = -1
+texture = ExtResource("1_iitqu")
+centered = false
+
+[node name="UI" type="Node2D" parent="."]
+position = Vector2(480, 0)
