@@ -27,11 +27,16 @@ func _process(_delta):
 
 func get_piece_v(pos: Vector2) -> Piece:
 	return get_piece(pos.x as int,pos.y as int)
+
 func get_piece(x: int, y: int) -> Piece:
-	if (pieces.has(x_y_to_key(x,y))):
-		var p = pieces[x_y_to_key(x,y)] 
-		if (p != null):
-			return p as Piece
+	return get_grid(x,y,pieces)
+	
+func get_grid(x:int,y:int,dict: Dictionary)->Piece:
+	if (x < 8 && x >= 0 && y < 8 && y >= 0):
+		if (dict.has(x_y_to_key(x,y))):
+			var p = dict[x_y_to_key(x,y)] 
+			if (p != null):
+				return p as Piece
 	return null
 
 func draw_tile_border(pos: Vector2, color: Color):
@@ -138,20 +143,30 @@ func new_game() -> void:
 	for key in pieces:
 		add_child(pieces[key])
 
-func would_be_in_check(piece: Piece, pos: Vector2) -> bool:
+func would_be_in_check(x:int, y:int,piece: Piece, pos: Vector2) -> bool:
 	var player = piece.player
 	var king_pos = king_positions[player]
 	if (piece.type == Pieces.king):
 		king_pos = pos
-		
-	var mult = -1+(player*2)
+	var board_state = pieces.duplicate()
+	board_state.erase(x_y_to_key(x,y))
+	board_state[x_y_to_key(pos.x as int,pos.y as int)] = piece
+	return king_in_check(player,board_state,king_pos)
+	
+func king_in_check(player: int, board_state:Dictionary, king_pos: Vector2) -> bool:
+	
 	### Check if pawns could capture king
+	var y = -1+(player*2)
 	for i in range(0,2):
 		var x = -1+(i*2)
-		var p = get_piece(king_pos.x+x,king_pos.y+mult)
-		if (p == null):
-			continue
-		if (p.type == Pieces.pawn && p.player != player):
-			return true
-		
+		var p = get_grid((king_pos.x+x) as int,(king_pos.y+y) as int,board_state)
+		if (p != null):
+			if (p.type == Pieces.pawn && p.player != player):
+				return true
+	### Check if knights could capture king
+	for d in Pieces.knight_directions:
+		var p = get_grid((king_pos.x+d.x) as int,(king_pos.y+d.y) as int,board_state)
+		if (p != null):
+			if (p.type == Pieces.knight && p.player != player):
+				return true
 	return false
