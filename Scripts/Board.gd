@@ -71,14 +71,29 @@ func _input_move_state(event: InputEventMouseButton):
 		return
 	if (mouse_tile == invalid_tile):
 		return
+	if (valid_moves.find(mouse_tile) != -1):
+		var mouse_key = x_y_to_key(mouse_tile.x as int, mouse_tile.y as int)
+		if (pieces.has(mouse_key)):
+			remove_child(pieces[mouse_key])
+			pieces.erase(mouse_key)
+		pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
+		pieces[mouse_key] = selected_piece
+		selected_piece.position.x = mouse_tile.x * Game.tile_size
+		selected_piece.position.y = mouse_tile.y * Game.tile_size
+		selected_piece.moved = true
+		selected_piece = null
+		selected_piece_pos = invalid_tile
+		valid_moves = []
+		root.game_state = GameState.piece
+		root.switch_player()
+		queue_redraw()
+		
 
 func _draw():
-	
-	if (mouse_tile == invalid_tile):
-		return
-	
 	match root.game_state:
 		GameState.piece:
+			if (mouse_tile == invalid_tile):
+				return
 			var p: Piece = get_piece_v(mouse_tile)
 			if (p != null):
 				if (p.player == root.player):
@@ -86,6 +101,13 @@ func _draw():
 		GameState.move:
 			if (selected_piece_pos != invalid_tile):
 				draw_tile_border(selected_piece_pos,Color(0,1,0))
+			for move in valid_moves:
+				if (mouse_tile == move):
+					draw_tile_border(move,Color(1,1,0))
+				elif (get_piece_v(move) != null):
+					draw_tile_border(move,Color(1,0,0))
+				else:
+					draw_tile_border(move,Color(0,0,1))
 			
 		
 

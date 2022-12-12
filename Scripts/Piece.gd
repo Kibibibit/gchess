@@ -20,6 +20,8 @@ func valid_moves(x: int, y: int):
 		for i in range(0,distance()):
 			var pos = Vector2(x+d.x*((i+1)),y+d.y*(i+1)*mult)
 			if (_valid_move_filter(pos)):
+				if (tile_has_enemy(pos) && type == Pieces.pawn):
+					break
 				positions.append(pos)
 				if (tile_has_enemy(pos)):
 					break
@@ -27,7 +29,7 @@ func valid_moves(x: int, y: int):
 				break
 	if (type == Pieces.pawn):
 		for i in range(0,2):
-			var pos = Vector2(x-1+(i*2),y*mult)
+			var pos = Vector2(x-1+(i*2),y+mult)
 			if (tile_has_enemy(pos)):
 				positions.append(pos)
 			

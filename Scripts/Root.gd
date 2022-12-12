@@ -13,7 +13,7 @@ func _ready():
 
 
 func new_game():
-	player = 0
+	player = 1
 	switch_player()
 	board.new_game()
 	ui.new_game()
