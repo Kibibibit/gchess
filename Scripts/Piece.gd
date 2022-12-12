@@ -86,11 +86,13 @@ func directions() -> Array[Vector2]:
 func _valid_move_filter(pos: Vector2):
 	if (in_bounds(pos)):
 		var p = board.get_piece_v(pos)
-		if (p == null):
-			return true
-		else:
-			return tile_has_enemy(pos)
+		if (!board.would_be_in_check(self,pos)):
+			if (p == null):
+				return true
+			else:
+				return tile_has_enemy(pos)
 	return false
+	
 func in_bounds(pos: Vector2):
 	return pos.x < 8 && pos.x >= 0 && pos.y < 8 && pos.y >= 0
 

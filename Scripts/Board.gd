@@ -12,6 +12,7 @@ var valid_moves: Array[Vector2] = []
 @onready var root: Root = get_parent()
 
 var pieces: Dictionary = {}
+var king_positions: Array[Vector2] = []
 
 func _process(_delta):
 	var mouse: Vector2 = get_global_mouse_position()
@@ -78,6 +79,8 @@ func _input_move_state(event: InputEventMouseButton):
 			pieces.erase(mouse_key)
 		pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
 		pieces[mouse_key] = selected_piece
+		if (selected_piece.type == Pieces.king):
+			king_positions[root.player] = mouse_tile
 		selected_piece.position.x = mouse_tile.x * Game.tile_size
 		selected_piece.position.y = mouse_tile.y * Game.tile_size
 		selected_piece.moved = true
@@ -116,6 +119,7 @@ func x_y_to_key(x:int, y:int):
 
 func new_game() -> void:
 	pieces = {}
+	king_positions = []
 	for i in range(0,2):
 		for x in range(0,8):
 			var y: int = 6-5*i
@@ -127,7 +131,27 @@ func new_game() -> void:
 			var y: int = 7-7*i
 			var p: Piece =  Piece.new(i,types[x])
 			p.position = Vector2(x*Game.tile_size, y*Game.tile_size)
+			if (p.type == Pieces.king):
+				king_positions.append(Vector2(x,y))
 			pieces[x_y_to_key(x,y)] = p
 	
 	for key in pieces:
 		add_child(pieces[key])
+
+func would_be_in_check(piece: Piece, pos: Vector2) -> bool:
+	var player = piece.player
+	var king_pos = king_positions[player]
+	if (piece.type == Pieces.king):
+		king_pos = pos
+		
+	var mult = -1+(player*2)
+	### Check if pawns could capture king
+	for i in range(0,2):
+		var x = -1+(i*2)
+		var p = get_piece(king_pos.x+x,king_pos.y+mult)
+		if (p == null):
+			continue
+		if (p.type == Pieces.pawn && p.player != player):
+			return true
+		
+	return false
