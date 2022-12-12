@@ -10,12 +10,30 @@ config_version=5
 
 _global_script_classes=[{
 "base": "Node2D",
+"class": &"Board",
+"language": &"GDScript",
+"path": "res://Scripts/Board.gd"
+}, {
+"base": "Node2D",
 "class": &"Piece",
 "language": &"GDScript",
 "path": "res://Scripts/Piece.gd"
+}, {
+"base": "Node2D",
+"class": &"Root",
+"language": &"GDScript",
+"path": "res://Scripts/Root.gd"
+}, {
+"base": "Node2D",
+"class": &"UI",
+"language": &"GDScript",
+"path": "res://Scripts/UI.gd"
 }]
 _global_script_class_icons={
-"Piece": ""
+"Board": "",
+"Piece": "",
+"Root": "",
+"UI": ""
 }
 
 [application]
@@ -24,6 +42,12 @@ config/name="gchess"
 run/main_scene="res://Scenes/Root.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameState="*res://Scripts/GameState.gd"
+Game="*res://Scripts/Game.gd"
+Pieces="*res://Scripts/Pieces.gd"
 
 [display]
 

@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://eo0u6ql37rvi"]
+[gd_scene load_steps=6 format=3 uid="uid://eo0u6ql37rvi"]
 
+[ext_resource type="Script" path="res://Scripts/Root.gd" id="1_2eesy"]
 [ext_resource type="Texture2D" uid="uid://b0qnhams6s2by" path="res://Sprites/board.png" id="1_iitqu"]
 [ext_resource type="Script" path="res://Scripts/Board.gd" id="1_jb8bq"]
+[ext_resource type="Texture2D" uid="uid://8dpch01gufpw" path="res://Sprites/player.png" id="3_6jnnh"]
+[ext_resource type="Script" path="res://Scripts/UI.gd" id="4_8enp1"]
 
 [node name="Root" type="Node2D"]
+script = ExtResource("1_2eesy")
 
 [node name="Board" type="Node2D" parent="."]
 script = ExtResource("1_jb8bq")
@@ -15,3 +19,12 @@ centered = false
 
 [node name="UI" type="Node2D" parent="."]
 position = Vector2(480, 0)
+script = ExtResource("4_8enp1")
+
+[node name="PlayerIndicator" type="Node2D" parent="UI"]
+position = Vector2(26, 0)
+
+[node name="PlayerIndicatorSprite" type="Sprite2D" parent="UI/PlayerIndicator"]
+texture = ExtResource("3_6jnnh")
+centered = false
+vframes = 2
