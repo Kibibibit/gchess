@@ -47,8 +47,7 @@ func distance() -> int:
 			return 2
 		Pieces.knight, Pieces.king:
 			return 1
-		_:
-			return 8
+	return 8
 
 func directions() -> Array[Vector2]:
 	match type:
@@ -62,8 +61,7 @@ func directions() -> Array[Vector2]:
 			return Pieces.bishop_directions
 		Pieces.queen,Pieces.king:
 			return Pieces.all_directions
-		_:
-			return []
+	return []
 
 func _valid_move_filter(x:int,y:int,pos: Vector2):
 	if (in_bounds(pos)):
