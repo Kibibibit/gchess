@@ -169,4 +169,29 @@ func king_in_check(player: int, board_state:Dictionary, king_pos: Vector2) -> bo
 		if (p != null):
 			if (p.type == Pieces.knight && p.player != player):
 				return true
+				
+	### Check if king could capture king (Not going to happen but it prevents a king moving adjacent
+	### to another king
+	for d in Pieces.all_directions:
+		var p = get_grid((king_pos.x+d.x) as int, (king_pos.y+d.y) as int, board_state)
+		if (p != null):
+			if (p.type == Pieces.king && p.player != player):
+				return true
+	
+	### Check if queen, bishop or rook could capture king
+	var direction_list = [Pieces.all_directions, Pieces.rook_directions, Pieces.bishop_directions]
+	var piece_list = [Pieces.queen, Pieces.rook, Pieces.bishop]
+	for i in range(0,direction_list.size()):
+		var directions = direction_list[i]
+		var piece = piece_list[i]
+		for d in directions:
+			var mult = 1
+			while mult < 8:
+				var p = get_grid((king_pos.x+(d.x*mult)) as int, (king_pos.y+(d.y*mult)) as int, board_state)
+				if (p != null):
+					if (p.type == piece && p.player != player):
+						return true
+				mult += 1
+			
+	
 	return false

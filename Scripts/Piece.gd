@@ -55,31 +55,13 @@ func directions() -> Array[Vector2]:
 		Pieces.pawn:
 			return [Vector2(0,1)]
 		Pieces.rook:
-			return [Vector2(0,1),Vector2(0,-1), Vector2(1,0), Vector2(-1,0)]
+			return Pieces.rook_direction
 		Pieces.knight:
-			return [
-				Vector2(1,2),
-				Vector2(-1,2),
-				Vector2(1,-2),
-				Vector2(-1,-2),
-				Vector2(2,1),
-				Vector2(2,-1),
-				Vector2(-2,1),
-				Vector2(-2,-1)
-			]
+			return Pieces.knight_directions
 		Pieces.bishop:
-			return [Vector2(1,1),Vector2(-1,1),Vector2(1,-1),Vector2(-1,-1)]
+			return Pieces.bishop_directions
 		Pieces.queen,Pieces.king:
-			return [
-				Vector2(0,1),
-				Vector2(0,-1), 
-				Vector2(1,0), 
-				Vector2(-1,0),
-				Vector2(1,1),
-				Vector2(-1,1),
-				Vector2(1,-1),
-				Vector2(-1,-1)
-			]
+			return Pieces.all_directions
 		_:
 			return []
 
