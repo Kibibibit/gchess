@@ -81,6 +81,7 @@ func _input_move_state(event: InputEventMouseButton):
 		var mouse_key = x_y_to_key(mouse_tile.x as int, mouse_tile.y as int)
 		if (pieces.has(mouse_key)):
 			remove_child(pieces[mouse_key])
+			pieces[mouse_key].queue_free()
 			pieces.erase(mouse_key)
 		pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
 		pieces[mouse_key] = selected_piece
@@ -199,9 +200,10 @@ func king_in_check(player: int, board_state:Dictionary, king_pos: Vector2) -> bo
 				if (p != null):
 					if (p.type == piece && p.player != player):
 						return true
-					else:
+					elif (p.player == player):
 						break
 				mult += 1
+				
 			
 	
 	return false
