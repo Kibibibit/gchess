@@ -66,14 +66,16 @@ func _input_piece_state(event: InputEventMouseButton):
 			valid_moves = p.valid_moves_v(mouse_tile)
 			root.game_state = GameState.move
 			queue_redraw()
-	
+func deselect():
+	selected_piece = null
+	selected_piece_pos = invalid_tile
+	valid_moves = []
+	root.game_state = GameState.piece
+	queue_redraw()
+
 func _input_move_state(event: InputEventMouseButton):
-	if (event.button_index == MOUSE_BUTTON_RIGHT && selected_piece != null):
-		selected_piece = null
-		selected_piece_pos = invalid_tile
-		valid_moves = []
-		root.game_state = GameState.piece
-		queue_redraw()
+	if ((event.button_index == MOUSE_BUTTON_RIGHT || mouse_tile == invalid_tile) && selected_piece != null):
+		deselect()
 		return
 	if (mouse_tile == invalid_tile):
 		return
@@ -102,7 +104,8 @@ func _input_move_state(event: InputEventMouseButton):
 			print("Checkmate! ",["White","Black"][root.winner]," wins!") 
 			root.game_state = GameState.checkmate
 		queue_redraw()
-		
+	else:
+		deselect()
 		
 		
 
