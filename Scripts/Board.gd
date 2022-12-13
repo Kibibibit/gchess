@@ -200,7 +200,7 @@ func king_in_check(player: int, board_state:Dictionary, king_pos: Vector2) -> bo
 				if (p != null):
 					if (p.type == piece && p.player != player):
 						return true
-					elif (p.player == player):
+					elif (p.type != piece):
 						break
 				mult += 1
 				
