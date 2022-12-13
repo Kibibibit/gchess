@@ -6,6 +6,7 @@ extends Node2D
 
 var player: int
 var game_state: int = GameState.piece
+var winner: int
 
 
 func _ready():

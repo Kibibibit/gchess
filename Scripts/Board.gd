@@ -92,9 +92,17 @@ func _input_move_state(event: InputEventMouseButton):
 		selected_piece = null
 		selected_piece_pos = invalid_tile
 		valid_moves = []
-		root.game_state = GameState.piece
 		root.switch_player()
+		
+		if (!check_checkmate(root.player)):
+			root.game_state = GameState.piece
+		else:
+			root.winner = abs(root.player - 1)
+			print("Checkmate! ",["White","Black"][root.winner]," wins!") 
+			root.game_state = GameState.checkmate
 		queue_redraw()
+		
+		
 		
 
 func _draw():
@@ -191,7 +199,17 @@ func king_in_check(player: int, board_state:Dictionary, king_pos: Vector2) -> bo
 				if (p != null):
 					if (p.type == piece && p.player != player):
 						return true
+					else:
+						break
 				mult += 1
 			
 	
 	return false
+
+func check_checkmate(player: int):
+	for key in pieces.keys():
+		var p = pieces[key]
+		if (p.player == player):
+			if (p.valid_moves(p.position.x/Game.tile_size as int, p.position.y/Game.tile_size as int).size() > 0):
+				return false
+	return true

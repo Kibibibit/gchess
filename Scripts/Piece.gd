@@ -55,7 +55,7 @@ func directions() -> Array[Vector2]:
 		Pieces.pawn:
 			return [Vector2(0,1)]
 		Pieces.rook:
-			return Pieces.rook_direction
+			return Pieces.rook_directions
 		Pieces.knight:
 			return Pieces.knight_directions
 		Pieces.bishop:
