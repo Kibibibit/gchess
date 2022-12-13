@@ -22,3 +22,12 @@ func new_game():
 func switch_player():
 	player = abs(player-1)
 	ui.set_player(player)
+	
+func _exit_tree():
+	cleanup(self)
+	self.queue_free()
+
+func cleanup(node: Node):
+	for child in node.get_children():
+		cleanup(child)
+		child.queue_free()
