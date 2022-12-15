@@ -113,9 +113,8 @@ func _input_move_state(event: InputEventMouseButton):
 		
 
 func promote_pawn(at: Vector2) -> void:
-	
 	root.game_state = GameState.awaiting
-	var dialog: PromotionDialog = PromotionDialog.new()
+	var dialog: PromotionDialog = PromotionDialog.new(root.player)
 	dialog.position.x = (Game.board_size as float/2)-((PromotionDialog.promo_width-Dialog.size)/2)
 	root.add_child(dialog)
 	var new_piece = await dialog.on_selected

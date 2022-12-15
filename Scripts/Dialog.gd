@@ -43,6 +43,8 @@ func _ready():
 	bottom.position = Vector2(size,size+height)
 	bottom_right.position = Vector2(size+width, size+height)
 	
+	self.z_index = 100
+	
 	var sprites: Array[Sprite2D] = [top_left, top_right, top, bottom_left, bottom_right, bottom, left, right, center]
 	var i = 0
 	for sprite in sprites:
@@ -51,6 +53,7 @@ func _ready():
 		sprite.vframes = 3
 		sprite.hframes = 3
 		sprite.frame = i
+		sprite.z_index = -10
 		add_child(sprite)
 		i = i + 1
 		
