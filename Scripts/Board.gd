@@ -43,6 +43,8 @@ func draw_tile_border(pos: Vector2, color: Color):
 	draw_rect(Rect2(Vector2(pos.x*Game.tile_size,pos.y*Game.tile_size),Vector2(Game.tile_size,Game.tile_size)),color, false, 5)
 
 func _input(event):
+	if (root.game_state == GameState.awaiting):
+		return
 	if !(event is InputEventMouseButton):
 		return
 	if event.pressed:
@@ -50,7 +52,7 @@ func _input(event):
 	if (root.game_state == GameState.piece):
 		_input_piece_state(event as InputEventMouseButton)
 	elif(root.game_state == GameState.move):
-		_input_move_state(event as InputEventMouseButton)
+		await _input_move_state(event as InputEventMouseButton)
 		
 
 func _input_piece_state(event: InputEventMouseButton):
@@ -92,6 +94,8 @@ func _input_move_state(event: InputEventMouseButton):
 		selected_piece.position.x = mouse_tile.x * Game.tile_size
 		selected_piece.position.y = mouse_tile.y * Game.tile_size
 		selected_piece.moved = true
+		if (selected_piece.type == Pieces.pawn && (mouse_tile.y as int == 7 || mouse_tile.y as int == 0)):
+			await promote_pawn(mouse_tile)
 		selected_piece = null
 		selected_piece_pos = invalid_tile
 		valid_moves = []
@@ -107,7 +111,20 @@ func _input_move_state(event: InputEventMouseButton):
 	else:
 		deselect()
 		
-		
+
+func promote_pawn(at: Vector2) -> void:
+	
+	root.game_state = GameState.awaiting
+	var dialog: PromotionDialog = PromotionDialog.new()
+	dialog.position.x = (Game.board_size as float/2)-((PromotionDialog.promo_width-Dialog.size)/2)
+	root.add_child(dialog)
+	var new_piece = await dialog.on_selected
+	root.remove_child(dialog)
+	var key = x_y_to_key(at.x as int,at.y as int)
+	pieces[key].type = new_piece
+	pieces[key].update_sprite()
+	
+	return 
 
 func _draw():
 	match root.game_state:

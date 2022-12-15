@@ -89,8 +89,11 @@ func _ready():
 	sprite.centered = false
 	sprite.hframes = 6
 	sprite.vframes = 2
-	sprite.frame_coords = Vector2(type,player)
+	update_sprite()
 	add_child(sprite)
+
+func update_sprite():
+	sprite.frame_coords = Vector2(type,player)
 
 func _exit_tree():
 	sprite.queue_free()
