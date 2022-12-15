@@ -83,17 +83,37 @@ func _input_move_state(event: InputEventMouseButton):
 		return
 	if (valid_moves.find(mouse_tile) != -1):
 		var mouse_key = x_y_to_key(mouse_tile.x as int, mouse_tile.y as int)
-		if (pieces.has(mouse_key)):
+		if (pieces.has(mouse_key) && pieces[mouse_key].player != root.player):
 			root.capture(pieces[mouse_key])
 			remove_child(pieces[mouse_key])
 			pieces[mouse_key].queue_free()
 			pieces.erase(mouse_key)
-		pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
-		pieces[mouse_key] = selected_piece
 		if (selected_piece.type == Pieces.king):
 			king_positions[root.player] = mouse_tile
-		selected_piece.position.x = mouse_tile.x * Game.tile_size
-		selected_piece.position.y = mouse_tile.y * Game.tile_size
+		
+		if (selected_piece.type == Pieces.king && pieces[mouse_key].type == Pieces.rook):
+			var dir = -sign(selected_piece_pos.x-mouse_tile.x)
+			var king = selected_piece
+			var rook = pieces[mouse_key]
+			var king_pos = Vector2((selected_piece_pos.x)+(2*dir), selected_piece_pos.y)
+			var king_pos_key = x_y_to_key(king_pos.x as int, king_pos.y as int)
+			var rook_pos = Vector2(king_pos.x-dir,king_pos.y)
+			var rook_pos_key = x_y_to_key(rook_pos.x, rook_pos.y)
+			pieces.erase(mouse_key)
+			pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
+			pieces[king_pos_key] = king
+			pieces[rook_pos_key] = rook
+			rook.moved = true
+			rook.position.x = rook_pos.x * Game.tile_size
+			rook.position.y = rook_pos.y * Game.tile_size
+			king.position.x = king_pos.x * Game.tile_size
+			king.position.y = king_pos.y * Game.tile_size
+			king_positions[root.player] = king_pos
+		else:
+			pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
+			pieces[mouse_key] = selected_piece	
+			selected_piece.position.x = mouse_tile.x * Game.tile_size
+			selected_piece.position.y = mouse_tile.y * Game.tile_size
 		selected_piece.moved = true
 		var y = mouse_tile.y as int
 		var hit_end = y == 7 || y == 0
@@ -145,7 +165,10 @@ func _draw():
 				if (mouse_tile == move):
 					draw_tile_border(move,Color(1,1,0))
 				elif (get_piece_v(move) != null):
-					draw_tile_border(move,Color(1,0,0))
+					if (get_piece_v(move).player == root.player):
+						draw_tile_border(move,Color(0,1,0))
+					else:
+						draw_tile_border(move,Color(1,0,0))
 				else:
 					draw_tile_border(move,Color(0,0,1))
 			
@@ -184,7 +207,17 @@ func would_be_in_check(x:int, y:int,piece: Piece, pos: Vector2) -> bool:
 	board_state.erase(x_y_to_key(x,y))
 	board_state[x_y_to_key(pos.x as int,pos.y as int)] = piece
 	return king_in_check(player,board_state,king_pos)
-	
+
+func would_be_in_check_from_castle(current_pos: Vector2, castle_pos: Vector2, new_pos: Vector2, new_castle_pos: Vector2) -> bool:
+	var king = get_piece_v(current_pos)
+	var castle = get_piece_v(castle_pos)
+	var board_state = pieces.duplicate()
+	board_state.erase(x_y_to_key(current_pos.x as int, current_pos.y as int))
+	board_state.erase(x_y_to_key(castle_pos.x as int, castle_pos.y as int))
+	board_state[x_y_to_key(new_pos.x as int, new_pos.y as int)] = king
+	board_state[x_y_to_key(new_castle_pos.x as int, new_castle_pos.y as int)] = castle
+	return king_in_check(king.player, board_state, new_pos)
+
 func king_in_check(player: int, board_state:Dictionary, king_pos: Vector2) -> bool:
 	
 	### Check if pawns could capture king

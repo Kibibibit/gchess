@@ -32,7 +32,28 @@ func valid_moves(x: int, y: int):
 			var pos = Vector2(x-1+(i*2),y+mult)
 			if (tile_has_enemy(pos) && !board.would_be_in_check(x,y,self,pos)):
 				positions.append(pos)
-			
+	if (type == Pieces.king && !moved):
+		for i in range(0,2):
+			var x_off: int = 1-(2*i)
+			var x_check = x+x_off
+			while (x_check != 0 && x_check != 7):
+				if get_piece(Vector2(x_check,y)) != null:
+					break
+				x_check += x_off
+			if (x_check != 0 && x_check != 7):
+				continue
+			var p = get_piece(Vector2(x_check,y))
+			if (p == null):
+				print(x_check)
+				continue
+			if (p.type == Pieces.rook && p.player == player && p.moved == false):
+				var pos = Vector2(x,y)
+				var rook_pos = Vector2(x_check,y)
+				var new_pos = Vector2(x + (2*i),y)
+				var new_rook_pos = Vector2(new_pos.x-i,y)
+				
+				if (!board.would_be_in_check_from_castle(pos,rook_pos,new_pos,new_rook_pos)):
+					positions.append(rook_pos)
 		
 	return positions
 
@@ -83,6 +104,12 @@ func tile_has_enemy(pos: Vector2):
 	if (p != null):
 		return p.player != player
 	return false
+
+func get_piece(pos: Vector2):
+	if (!in_bounds(pos)):
+		return null
+	var p = board.get_piece_v(pos)
+	return p
 
 func _ready():
 	sprite.texture = texture

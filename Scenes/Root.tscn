@@ -34,7 +34,7 @@ centered = false
 vframes = 2
 
 [node name="PieceSlots" type="Node2D" parent="UI"]
-position = Vector2(0, 64)
+position = Vector2(0, 40)
 
 [node name="PieceSlotWP" parent="UI/PieceSlots" instance=ExtResource("6_nuxto")]
 position = Vector2(0, 10)
