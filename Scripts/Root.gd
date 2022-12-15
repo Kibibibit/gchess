@@ -22,3 +22,5 @@ func switch_player():
 	player = abs(player-1)
 	ui.set_player(player)
 
+func capture(p: Piece):
+	ui.capture_piece(p)

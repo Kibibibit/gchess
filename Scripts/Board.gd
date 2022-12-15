@@ -84,6 +84,7 @@ func _input_move_state(event: InputEventMouseButton):
 	if (valid_moves.find(mouse_tile) != -1):
 		var mouse_key = x_y_to_key(mouse_tile.x as int, mouse_tile.y as int)
 		if (pieces.has(mouse_key)):
+			root.capture(pieces[mouse_key])
 			remove_child(pieces[mouse_key])
 			pieces[mouse_key].queue_free()
 			pieces.erase(mouse_key)

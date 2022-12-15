@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://eo0u6ql37rvi"]
+[gd_scene load_steps=7 format=3 uid="uid://eo0u6ql37rvi"]
 
 [ext_resource type="Script" path="res://Scripts/Root.gd" id="1_2eesy"]
 [ext_resource type="Texture2D" uid="uid://b0qnhams6s2by" path="res://Sprites/board.png" id="1_iitqu"]
 [ext_resource type="Script" path="res://Scripts/Board.gd" id="1_jb8bq"]
 [ext_resource type="Texture2D" uid="uid://8dpch01gufpw" path="res://Sprites/player.png" id="3_6jnnh"]
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="4_8enp1"]
+[ext_resource type="PackedScene" uid="uid://cp2l88r4j0isr" path="res://Scenes/PieceSlot.tscn" id="6_nuxto"]
 
 [node name="Root" type="Node2D"]
 texture_filter = 1
@@ -31,3 +32,20 @@ position = Vector2(26, 10)
 texture = ExtResource("3_6jnnh")
 centered = false
 vframes = 2
+
+[node name="PieceSlots" type="Node2D" parent="UI"]
+position = Vector2(0, 64)
+
+[node name="PieceSlotWP" parent="UI/PieceSlots" instance=ExtResource("6_nuxto")]
+position = Vector2(0, 10)
+
+[node name="PieceSlotWO" parent="UI/PieceSlots" instance=ExtResource("6_nuxto")]
+position = Vector2(0, 74)
+
+[node name="PieceSlotBP" parent="UI/PieceSlots" instance=ExtResource("6_nuxto")]
+position = Vector2(0, 138)
+black = true
+
+[node name="PieceSlotBO" parent="UI/PieceSlots" instance=ExtResource("6_nuxto")]
+position = Vector2(0, 206)
+black = true
