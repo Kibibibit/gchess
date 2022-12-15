@@ -15,6 +15,11 @@ _global_script_classes=[{
 "path": "res://Scripts/Board.gd"
 }, {
 "base": "Node2D",
+"class": &"Dialog",
+"language": &"GDScript",
+"path": "res://Scripts/Dialog.gd"
+}, {
+"base": "Node2D",
 "class": &"Piece",
 "language": &"GDScript",
 "path": "res://Scripts/Piece.gd"
@@ -31,6 +36,7 @@ _global_script_classes=[{
 }]
 _global_script_class_icons={
 "Board": "",
+"Dialog": "",
 "Piece": "",
 "Root": "",
 "UI": ""

@@ -7,22 +7,25 @@
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="4_8enp1"]
 
 [node name="Root" type="Node2D"]
+texture_filter = 1
 script = ExtResource("1_2eesy")
 
 [node name="Board" type="Node2D" parent="."]
 script = ExtResource("1_jb8bq")
 
 [node name="BoardSprite" type="Sprite2D" parent="Board"]
-z_index = -3
+z_index = -4
 texture = ExtResource("1_iitqu")
 centered = false
 
 [node name="UI" type="Node2D" parent="."]
+z_index = 5
 position = Vector2(480, 0)
 script = ExtResource("4_8enp1")
 
 [node name="PlayerIndicator" type="Node2D" parent="UI"]
-position = Vector2(26, 0)
+z_index = -2
+position = Vector2(26, 10)
 
 [node name="PlayerIndicatorSprite" type="Sprite2D" parent="UI/PlayerIndicator"]
 texture = ExtResource("3_6jnnh")
