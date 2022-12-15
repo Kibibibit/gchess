@@ -3,7 +3,7 @@ extends Dialog
 
 signal on_selected(type: int)
 const promo_width: float = Game.tile_size * 4.0
-
+const promo_height: float = Game.tile_size
 const pieces: Array[int] = [Pieces.rook, Pieces.knight, Pieces.bishop, Pieces.queen]
 
 var player: int
@@ -11,7 +11,7 @@ var invalid_pos: Vector2 = Vector2(-1,-1)
 var last_mouse: Vector2 = invalid_pos
 var mouse_pos: Vector2 = invalid_pos
 func _init(p: int):
-	super(promo_width as int,Game.tile_size)
+	super(promo_width as int,promo_height as int)
 	player = p
 
 func _ready():

@@ -94,7 +94,9 @@ func _input_move_state(event: InputEventMouseButton):
 		selected_piece.position.x = mouse_tile.x * Game.tile_size
 		selected_piece.position.y = mouse_tile.y * Game.tile_size
 		selected_piece.moved = true
-		if (selected_piece.type == Pieces.pawn && (mouse_tile.y as int == 7 || mouse_tile.y as int == 0)):
+		var y = mouse_tile.y as int
+		var hit_end = y == 7 || y == 0
+		if (selected_piece.type == Pieces.pawn && hit_end):
 			await promote_pawn(mouse_tile)
 		selected_piece = null
 		selected_piece_pos = invalid_tile
@@ -116,6 +118,7 @@ func promote_pawn(at: Vector2) -> void:
 	root.game_state = GameState.awaiting
 	var dialog: PromotionDialog = PromotionDialog.new(root.player)
 	dialog.position.x = (Game.board_size as float/2)-((PromotionDialog.promo_width-Dialog.size)/2)
+	dialog.position.y = (Game.board_size as float/2)-((PromotionDialog.promo_height as float-Dialog.size)/2)
 	root.add_child(dialog)
 	var new_piece = await dialog.on_selected
 	root.remove_child(dialog)

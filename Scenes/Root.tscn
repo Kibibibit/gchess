@@ -24,7 +24,7 @@ position = Vector2(480, 0)
 script = ExtResource("4_8enp1")
 
 [node name="PlayerIndicator" type="Node2D" parent="UI"]
-z_index = -2
+z_index = 100
 position = Vector2(26, 10)
 
 [node name="PlayerIndicatorSprite" type="Sprite2D" parent="UI/PlayerIndicator"]
