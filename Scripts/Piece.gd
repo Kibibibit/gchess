@@ -20,14 +20,16 @@ func valid_moves(x: int, y: int):
 		var d = Vector2(direction.x, direction.y)
 		for i in range(0,distance()):
 			var pos = Vector2(x+d.x*((i+1)),y+d.y*(i+1)*mult)
-			if (_valid_move_filter(x,y,pos)):
+			if (_valid_move_filter(pos)):
 				if (tile_has_enemy(pos) && type == Pieces.pawn):
 					break
-				positions.append(pos)
+				if (!board.would_be_in_check(x,y,self,pos)):
+					positions.append(pos)
 				if (tile_has_enemy(pos)):
 					break
-			else:
+			elif (board.get_piece_v(pos) != null):
 				break
+			
 	if (type == Pieces.pawn):
 		for i in range(0,2):
 			var pos = Vector2(x-1+(i*2),y+mult)
@@ -92,14 +94,13 @@ func directions() -> Array[Vector2]:
 			return Pieces.all_directions
 	return []
 
-func _valid_move_filter(x:int,y:int,pos: Vector2):
+func _valid_move_filter(pos: Vector2):
 	if (in_bounds(pos)):
 		var p = board.get_piece_v(pos)
-		if (!board.would_be_in_check(x,y,self,pos)):
-			if (p == null):
-				return true
-			else:
-				return tile_has_enemy(pos)
+		if (p == null):
+			return true
+		else:
+			return tile_has_enemy(pos)
 	return false
 	
 func in_bounds(pos: Vector2):
