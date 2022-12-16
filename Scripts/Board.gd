@@ -83,11 +83,13 @@ func _input_move_state(event: InputEventMouseButton):
 		return
 	if (valid_moves.find(mouse_tile) != -1):
 		var mouse_key = x_y_to_key(mouse_tile.x as int, mouse_tile.y as int)
+		var captured = false
 		if (pieces.has(mouse_key) && pieces[mouse_key].player != root.player):
 			root.capture(pieces[mouse_key])
 			remove_child(pieces[mouse_key])
 			pieces[mouse_key].queue_free()
 			pieces.erase(mouse_key)
+			captured = true
 		if (selected_piece.type == Pieces.king):
 			king_positions[root.player] = mouse_tile
 		
@@ -114,11 +116,26 @@ func _input_move_state(event: InputEventMouseButton):
 			pieces[mouse_key] = selected_piece	
 			selected_piece.position.x = mouse_tile.x * Game.tile_size
 			selected_piece.position.y = mouse_tile.y * Game.tile_size
+		if (selected_piece.type == Pieces.pawn && abs(selected_piece_pos.x-mouse_tile.x) == 1 && !captured):
+			var x_off = -(selected_piece_pos.x-mouse_tile.x)
+			var en_pos = Vector2(selected_piece_pos.x+x_off,selected_piece_pos.y)
+			var en_key = x_y_to_key(en_pos.x as int, en_pos.y as int)
+			root.capture(pieces[en_key])
+			remove_child(pieces[en_key])
+			pieces[en_key].queue_free()
+			pieces.erase(en_key)
+			
 		selected_piece.moved = true
-		var y = mouse_tile.y as int
-		var hit_end = y == 7 || y == 0
-		if (selected_piece.type == Pieces.pawn && hit_end):
-			await promote_pawn(mouse_tile)
+		
+		if (selected_piece.type == Pieces.pawn):
+			var y = mouse_tile.y as int
+			var hit_end = y == 7 || y == 0
+			if (hit_end):
+				await promote_pawn(mouse_tile)
+			if (abs(mouse_tile.y-selected_piece_pos.y) == 2):
+				selected_piece.jumped = true
+			elif (selected_piece.jumped):
+				selected_piece.jumped = false
 		selected_piece = null
 		selected_piece_pos = invalid_tile
 		valid_moves = []

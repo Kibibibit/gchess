@@ -7,6 +7,7 @@ extends Node2D
 var player: int
 var type: int
 var moved: bool = false
+var jumped: bool = false
 
 func _init(_player: int, _type: int):
 	self.player = _player
@@ -30,8 +31,15 @@ func valid_moves(x: int, y: int):
 	if (type == Pieces.pawn):
 		for i in range(0,2):
 			var pos = Vector2(x-1+(i*2),y+mult)
-			if (tile_has_enemy(pos) && !board.would_be_in_check(x,y,self,pos)):
+			var can_en = false
+			var en_pos = Vector2(x-1+(i*2),y)
+			var en_p = board.get_piece_v(en_pos)
+			if (en_p != null):
+				can_en = en_p.type == Pieces.pawn && en_p.jumped && en_p.player != player
+			if ((tile_has_enemy(pos) || can_en) && !board.would_be_in_check(x,y,self,pos)):
 				positions.append(pos)
+			
+					
 	if (type == Pieces.king && !moved):
 		for i in range(0,2):
 			var x_off: int = 1-(2*i)
