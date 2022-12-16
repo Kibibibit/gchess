@@ -26,6 +26,7 @@ func new_game():
 func switch_player():
 	player = abs(player-1)
 	ui.set_player(player)
+	board.clear_jumps()
 
 func capture(p: Piece):
 	ui.capture_piece(p)

@@ -42,6 +42,11 @@ func get_grid(x:int,y:int,dict: Dictionary)->Piece:
 func draw_tile_border(pos: Vector2, color: Color):
 	draw_rect(Rect2(Vector2(pos.x*Game.tile_size,pos.y*Game.tile_size),Vector2(Game.tile_size,Game.tile_size)),color, false, 5)
 
+func clear_jumps():
+	for key in pieces.keys():
+		if (pieces[key].player == root.player && pieces[key].type == Pieces.pawn):
+			pieces[key].jumped = false
+
 func _input(event):
 	if (root.game_state == GameState.awaiting):
 		return
@@ -135,8 +140,6 @@ func _input_move_state(event: InputEventMouseButton):
 				await promote_pawn(mouse_tile)
 			elif (abs(mouse_tile.y-selected_piece_pos.y) == 2):
 				selected_piece.jumped = true
-			elif (selected_piece.jumped):
-				selected_piece.jumped = false
 		selected_piece = null
 		selected_piece_pos = invalid_tile
 		valid_moves = []

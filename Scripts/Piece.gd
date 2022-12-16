@@ -54,7 +54,6 @@ func valid_moves(x: int, y: int):
 				continue
 			var p = get_piece(Vector2(x_check,y))
 			if (p == null):
-				print(x_check)
 				continue
 			if (p.type == Pieces.rook && p.player == player && p.moved == false):
 				var pos = Vector2(x,y)
