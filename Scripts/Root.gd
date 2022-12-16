@@ -14,9 +14,14 @@ func _ready():
 
 func new_game():
 	player = 1
+	game_state = GameState.piece
 	switch_player()
 	board.new_game()
 	ui.new_game()
+	for child in get_children():
+		if (child is Dialog):
+			remove_child(child)
+			child.queue_free()
 
 func switch_player():
 	player = abs(player-1)

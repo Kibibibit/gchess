@@ -13,6 +13,11 @@ func _ready():
 		player = 1
 	sprite.queue_free()
 	remove_child(sprite)
+	
+func new_game():
+	for child in get_children():
+		child.queue_free()
+		remove_child(child)
 
 func add_piece(p: int):
 	var s = Sprite2D.new()

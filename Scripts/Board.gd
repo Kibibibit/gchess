@@ -93,24 +93,25 @@ func _input_move_state(event: InputEventMouseButton):
 		if (selected_piece.type == Pieces.king):
 			king_positions[root.player] = mouse_tile
 		
-		if (selected_piece.type == Pieces.king && pieces[mouse_key].type == Pieces.rook):
-			var dir = -sign(selected_piece_pos.x-mouse_tile.x)
-			var king = selected_piece
-			var rook = pieces[mouse_key]
-			var king_pos = Vector2((selected_piece_pos.x)+(2*dir), selected_piece_pos.y)
-			var king_pos_key = x_y_to_key(king_pos.x as int, king_pos.y as int)
-			var rook_pos = Vector2(king_pos.x-dir,king_pos.y)
-			var rook_pos_key = x_y_to_key(rook_pos.x, rook_pos.y)
-			pieces.erase(mouse_key)
-			pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
-			pieces[king_pos_key] = king
-			pieces[rook_pos_key] = rook
-			rook.moved = true
-			rook.position.x = rook_pos.x * Game.tile_size
-			rook.position.y = rook_pos.y * Game.tile_size
-			king.position.x = king_pos.x * Game.tile_size
-			king.position.y = king_pos.y * Game.tile_size
-			king_positions[root.player] = king_pos
+		if (selected_piece.type == Pieces.king && pieces.has(mouse_key)):
+			if (pieces[mouse_key].type == Pieces.rook):
+				var dir = -sign(selected_piece_pos.x-mouse_tile.x)
+				var king = selected_piece
+				var rook = pieces[mouse_key]
+				var king_pos = Vector2((selected_piece_pos.x)+(2*dir), selected_piece_pos.y)
+				var king_pos_key = x_y_to_key(king_pos.x as int, king_pos.y as int)
+				var rook_pos = Vector2(king_pos.x-dir,king_pos.y)
+				var rook_pos_key = x_y_to_key(rook_pos.x, rook_pos.y)
+				pieces.erase(mouse_key)
+				pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
+				pieces[king_pos_key] = king
+				pieces[rook_pos_key] = rook
+				rook.moved = true
+				rook.position.x = rook_pos.x * Game.tile_size
+				rook.position.y = rook_pos.y * Game.tile_size
+				king.position.x = king_pos.x * Game.tile_size
+				king.position.y = king_pos.y * Game.tile_size
+				king_positions[root.player] = king_pos
 		else:
 			pieces.erase(x_y_to_key(selected_piece_pos.x as int, selected_piece_pos.y as int))
 			pieces[mouse_key] = selected_piece	
@@ -132,7 +133,7 @@ func _input_move_state(event: InputEventMouseButton):
 			var hit_end = y == 7 || y == 0
 			if (hit_end):
 				await promote_pawn(mouse_tile)
-			if (abs(mouse_tile.y-selected_piece_pos.y) == 2):
+			elif (abs(mouse_tile.y-selected_piece_pos.y) == 2):
 				selected_piece.jumped = true
 			elif (selected_piece.jumped):
 				selected_piece.jumped = false
@@ -145,7 +146,10 @@ func _input_move_state(event: InputEventMouseButton):
 			root.game_state = GameState.piece
 		else:
 			root.winner = abs(root.player - 1)
-			print("Checkmate! ",["White","Black"][root.winner]," wins!") 
+			var dialog: WinnerDialog = WinnerDialog.new(root.winner)
+			dialog.position.x = (Game.board_size as float/2)-((WinnerDialog.winner_width as float-Dialog.size)/2)
+			dialog.position.y = (Game.board_size as float/2)-((WinnerDialog.winner_height as float-Dialog.size)/2)
+			root.add_child(dialog)
 			root.game_state = GameState.checkmate
 		queue_redraw()
 	else:

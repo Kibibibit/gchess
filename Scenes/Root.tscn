@@ -31,7 +31,7 @@ position = Vector2(26, 10)
 [node name="PlayerIndicatorSprite" type="Sprite2D" parent="UI/PlayerIndicator"]
 texture = ExtResource("3_6jnnh")
 centered = false
-vframes = 2
+vframes = 3
 
 [node name="PieceSlots" type="Node2D" parent="UI"]
 position = Vector2(0, 40)

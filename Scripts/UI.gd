@@ -15,10 +15,13 @@ func _ready():
 	add_child(dialog)
 
 func new_game():
-	pass
+	piece_white_pawn.new_game()
+	piece_white_other.new_game()
+	piece_black_pawn.new_game()
+	piece_black_other.new_game()
 
 func set_player(player: int):
-	player_indicator.frame_coords.y = abs(player-1)
+	player_indicator.frame_coords.y = player
 
 func capture_piece(p: Piece):
 	if (p.player == 0):
