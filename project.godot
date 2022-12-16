@@ -71,6 +71,7 @@ _global_script_class_icons={
 config/name="gchess"
 run/main_scene="res://Scenes/Root.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
+boot_splash/show_image=false
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
 
@@ -89,3 +90,4 @@ window/size/resizable=false
 [rendering]
 
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
