@@ -26,7 +26,7 @@ func configure_sprite(sprite: Sprite2D):
 	sprite.texture = load("res://Sprites/player.png")
 	sprite.centered= false
 	sprite.hframes = 1
-	sprite.vframes = 3
+	sprite.vframes = 4
 	sprite.z_index = 10
 	sprite.position.x = Dialog.size
 	sprite.position.y = Dialog.size

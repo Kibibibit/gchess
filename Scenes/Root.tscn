@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cp2l88r4j0isr" path="res://Scenes/PieceSlot.tscn" id="6_nuxto"]
 
 [node name="Root" type="Node2D"]
+z_index = -1000
 texture_filter = 1
 script = ExtResource("1_2eesy")
 
@@ -31,7 +32,7 @@ position = Vector2(26, 10)
 [node name="PlayerIndicatorSprite" type="Sprite2D" parent="UI/PlayerIndicator"]
 texture = ExtResource("3_6jnnh")
 centered = false
-vframes = 3
+vframes = 4
 
 [node name="PieceSlots" type="Node2D" parent="UI"]
 position = Vector2(0, 40)

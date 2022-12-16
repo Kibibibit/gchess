@@ -10,9 +10,15 @@ extends Node2D
 @onready var piece_black_pawn: PieceSlot = $PieceSlots/PieceSlotBP
 @onready var piece_black_other: PieceSlot = $PieceSlots/PieceSlotBO
 
+@onready var new_button: NewButton = NewButton.new()
+
 func _ready():
 	dialog.z_index = -10
 	add_child(dialog)
+	new_button.position.y = Game.board_size - NewButton.new_height - (Dialog.size*2) - 10
+	new_button.position.x = (160.0/2) - (NewButton.new_width as float /2) - Dialog.size
+	new_button.z_index = 10
+	add_child(new_button)
 
 func new_game():
 	piece_white_pawn.new_game()

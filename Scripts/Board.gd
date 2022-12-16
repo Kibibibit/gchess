@@ -201,6 +201,10 @@ func x_y_to_key(x:int, y:int):
 func new_game() -> void:
 	pieces = {}
 	king_positions = []
+	for child in get_children():
+		if !(child is Sprite2D):
+			remove_child(child)
+			child.queue_free()
 	for i in range(0,2):
 		for x in range(0,8):
 			var y: int = 6-5*i
